@@ -222,6 +222,90 @@
 			border-color: var(--accent);
 		}
 
+		.icon-add {
+			display: flex;
+			gap: 6px;
+			margin-bottom: 8px;
+		}
+
+		.icon-add input[type="text"] {
+			flex: 1;
+			min-width: 0;
+			border: 1px solid var(--border);
+			background: var(--bg);
+			color: var(--text);
+			border-radius: 8px;
+			padding: 6px 10px;
+			font-size: 13px;
+		}
+
+		.icon-add input[type="text"]:focus {
+			outline: none;
+			border-color: var(--accent);
+		}
+
+		.icon-add #iconAdd,
+		.upload-btn {
+			border: 1px solid var(--border);
+			background: var(--panel);
+			color: var(--text);
+			border-radius: 8px;
+			padding: 6px 12px;
+			font-size: 13px;
+			font-weight: 600;
+			cursor: pointer;
+			white-space: nowrap;
+		}
+
+		.icon-add #iconAdd:hover,
+		.upload-btn:hover {
+			border-color: var(--accent);
+			color: var(--accent);
+		}
+
+		.icon-list {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+		}
+
+		.icon-chip {
+			position: relative;
+			width: 38px;
+			height: 38px;
+			border: 1px solid var(--border);
+			border-radius: 10px;
+			background: var(--bg);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.icon-chip img {
+			width: 22px;
+			height: 22px;
+			object-fit: contain;
+		}
+
+		.icon-chip button {
+			position: absolute;
+			top: -7px;
+			right: -7px;
+			width: 18px;
+			height: 18px;
+			border: none;
+			border-radius: 50%;
+			background: var(--accent);
+			color: #fff;
+			font-size: 12px;
+			line-height: 1;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0;
+		}
+
 		@media (max-width: 760px) {
 			main {
 				grid-template-columns: 1fr;
@@ -280,6 +364,18 @@
 				<label><input type="checkbox" id="emit" checked /> Emit rings</label>
 			</div>
 			<div class="row">
+				<label>Icons</label>
+				<div class="icon-add">
+					<input type="text" id="iconInput" placeholder="github, discord or paste a URL" />
+					<button type="button" id="iconAdd">Add</button>
+					<label class="upload-btn" title="Upload SVG/PNG">
+						Upload
+						<input type="file" id="iconFile" accept="image/*,.svg" multiple hidden />
+					</label>
+				</div>
+				<div class="icon-list" id="iconList"></div>
+			</div>
+			<div class="row">
 				<label>Presets</label>
 				<div class="presets">
 					<button data-preset="brand">Brand blue</button>
@@ -313,17 +409,99 @@
 			root.setAttribute("data-theme", next);
 			localStorage.setItem("theme", next);
 			paintTheme();
+			applyIcons();
 		});
 
-		const icons = [
-			"https://cdn.simpleicons.org/meta/0866FF",
-			"https://cdn.simpleicons.org/tiktok/000000",
-			"https://cdn.simpleicons.org/snapchat/FFFC00",
-			"https://cdn.simpleicons.org/x/000000",
-			"https://cdn.simpleicons.org/google/4285F4",
-		];
 		const oa = document.getElementById("oa");
-		oa.icons = icons;
+		// Icon management. Two kinds of icons live in `iconList`:
+		//   { kind: "si", name, light, dark } — Simple Icons slug, theme-aware color
+		//   { kind: "url", src }              — a raw URL or data: URL, used as-is
+		// Default icons carry explicit light/dark colors so black marks (TikTok, X)
+		// stay visible in dark mode. User-added names use the brand color (no override).
+		const defaultIcons = [
+			{ kind: "si", name: "meta", light: "0866FF", dark: "0866FF" },
+			{ kind: "si", name: "tiktok", light: "000000", dark: "e2e8f0" },
+			{ kind: "si", name: "snapchat", light: "FFFC00", dark: "FFFC00" },
+			{ kind: "si", name: "x", light: "000000", dark: "e2e8f0" },
+			{ kind: "si", name: "google", light: "4285F4", dark: "4285F4" },
+		];
+		let iconList = defaultIcons.map(d => ({ ...d }));
+
+		function resolveIcon(ic) {
+			if (ic.kind === "url") return ic.src;
+			const color = root.getAttribute("data-theme") === "dark" ? ic.dark : ic.light;
+			return color
+				? `https://cdn.simpleicons.org/${ic.name}/${color}`
+				: `https://cdn.simpleicons.org/${ic.name}`;
+		}
+
+		const iconListEl = document.getElementById("iconList");
+
+		function renderIconChips() {
+			iconListEl.innerHTML = "";
+			iconList.forEach((ic, i) => {
+				const chip = document.createElement("div");
+				chip.className = "icon-chip";
+				const img = document.createElement("img");
+				img.src = resolveIcon(ic);
+				img.alt = ic.kind === "si" ? ic.name : "icon";
+				const rm = document.createElement("button");
+				rm.type = "button";
+				rm.textContent = "×";
+				rm.setAttribute("aria-label", "Remove icon");
+				rm.addEventListener("click", () => removeIcon(i));
+				chip.append(img, rm);
+				iconListEl.appendChild(chip);
+			});
+		}
+
+		function applyIcons() {
+			oa.icons = iconList.map(resolveIcon);
+			renderIconChips();
+		}
+
+		function removeIcon(i) {
+			iconList.splice(i, 1);
+			if (iconList.length === 0) iconList = defaultIcons.map(d => ({ ...d }));
+			applyIcons();
+		}
+
+		function parseToken(tok) {
+			tok = tok.trim();
+			if (!tok) return null;
+			if (/^(https?:|data:)/i.test(tok)) return { kind: "url", src: tok };
+			return { kind: "si", name: tok.toLowerCase(), light: null, dark: null };
+		}
+
+		function addFromInput() {
+			const parts = iconInput.value.split(",").map(parseToken).filter(Boolean);
+			if (parts.length) {
+				iconList.push(...parts);
+				iconInput.value = "";
+				applyIcons();
+			}
+		}
+
+		const iconInput = document.getElementById("iconInput");
+		document.getElementById("iconAdd").addEventListener("click", addFromInput);
+		iconInput.addEventListener("keydown", e => {
+			if (e.key === "Enter") { e.preventDefault(); addFromInput(); }
+		});
+
+		const iconFile = document.getElementById("iconFile");
+		iconFile.addEventListener("change", () => {
+			for (const file of iconFile.files) {
+				const reader = new FileReader();
+				reader.onload = () => {
+					iconList.push({ kind: "url", src: reader.result });
+					applyIcons();
+				};
+				reader.readAsDataURL(file);
+			}
+			iconFile.value = "";
+		});
+
+		applyIcons();
 
 		const attrMap = {
 			accent: "accent", radius: "radius", iconSize: "icon-size", rings: "rings",
@@ -359,7 +537,8 @@
 </orbit-absorb>`;
 		}
 
-		document.querySelectorAll("input").forEach(i => i.addEventListener("input", sync));
+		document.querySelectorAll('input[type="range"], input[type="color"], input[type="checkbox"]')
+			.forEach(i => i.addEventListener("input", sync));
 
 		const presets = {
 			brand: { accent: "#007CE1", radius: 140, iconSize: 80, rings: 3, spin: 60, absorb: 7, stagger: 0.25, glow: true, emit: true },
