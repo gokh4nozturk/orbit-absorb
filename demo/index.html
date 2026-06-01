@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>orbit-absorb — interactive demo</title>
+	<style>
+		* { box-sizing: border-box; }
+		body {
+			margin: 0; font-family: system-ui, -apple-system, sans-serif;
+			background: #f7f9fb; color: #0f172a;
+		}
+		header { max-width: 1100px; margin: 0 auto; padding: 40px 24px 8px; }
+		h1 { font-size: 30px; margin: 0; }
+		h1 code { background: #eef2f6; padding: 2px 10px; border-radius: 8px; }
+		.sub { color: #64748b; margin: 8px 0 0; }
+		.links a { color: #007ce1; text-decoration: none; margin-right: 16px; font-size: 14px; }
+		main {
+			max-width: 1100px; margin: 0 auto; padding: 24px;
+			display: grid; gap: 32px; grid-template-columns: 320px 1fr; align-items: start;
+		}
+		.panel {
+			background: #fff; border-radius: 20px; padding: 20px;
+			box-shadow: 0 1px 3px rgba(0,0,0,.06); position: sticky; top: 24px;
+		}
+		.row { margin-bottom: 16px; }
+		.row label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+		.row label .val { color: #007ce1; font-variant-numeric: tabular-nums; }
+		input[type="range"] { width: 100%; }
+		input[type="color"] { width: 100%; height: 36px; border: none; background: none; cursor: pointer; }
+		.toggles { display: flex; gap: 20px; }
+		.toggles label { font-size: 13px; font-weight: 600; color: #475569; display: flex; gap: 6px; align-items: center; }
+		.presets { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+		.presets button {
+			border: 1px solid #e2e8f0; background: #fff; border-radius: 999px;
+			padding: 6px 12px; font-size: 13px; cursor: pointer;
+		}
+		.presets button:hover { border-color: #007ce1; color: #007ce1; }
+		.stage {
+			background: #fff; border-radius: 24px; padding: 32px;
+			box-shadow: 0 1px 3px rgba(0,0,0,.06); display: flex; justify-content: center;
+		}
+		orbit-absorb { max-width: 460px; width: 100%; }
+		.mark { font-weight: 800; color: #fff; font-size: 24px; line-height: 1; }
+		pre {
+			grid-column: 1 / -1; background: #0f172a; color: #e2e8f0;
+			padding: 18px 20px; border-radius: 16px; overflow-x: auto; font-size: 13px; margin: 0;
+		}
+		@media (max-width: 760px) { main { grid-template-columns: 1fr; } .panel { position: static; } }
+	</style>
+</head>
+<body>
+	<header>
+		<h1><code>&lt;orbit-absorb&gt;</code></h1>
+		<p class="sub">Icons revolve, collapse into the center, and re-emerge in a staggered wave. Zero dependencies.</p>
+		<p class="links">
+			<a href="https://github.com/gokh4nozturk/orbit-absorb">GitHub</a>
+			<a href="https://www.npmjs.com/package/orbit-absorb">npm</a>
+		</p>
+	</header>
+
+	<main>
+		<div class="panel">
+			<div class="row">
+				<label>Accent <span class="val" id="accentVal">#007CE1</span></label>
+				<input type="color" id="accent" value="#007CE1" />
+			</div>
+			<div class="row">
+				<label>Radius <span class="val" id="radiusVal">140</span></label>
+				<input type="range" id="radius" min="80" max="220" value="140" />
+			</div>
+			<div class="row">
+				<label>Icon size <span class="val" id="iconSizeVal">80</span></label>
+				<input type="range" id="iconSize" min="40" max="120" value="80" />
+			</div>
+			<div class="row">
+				<label>Rings <span class="val" id="ringsVal">3</span></label>
+				<input type="range" id="rings" min="1" max="6" value="3" />
+			</div>
+			<div class="row">
+				<label>Spin (s) <span class="val" id="spinVal">60</span></label>
+				<input type="range" id="spin" min="6" max="120" value="60" />
+			</div>
+			<div class="row">
+				<label>Absorb cycle (s) <span class="val" id="absorbVal">7</span></label>
+				<input type="range" id="absorb" min="3" max="14" step="0.5" value="7" />
+			</div>
+			<div class="row">
+				<label>Stagger (s) <span class="val" id="staggerVal">0.25</span></label>
+				<input type="range" id="stagger" min="0" max="1" step="0.05" value="0.25" />
+			</div>
+			<div class="row toggles">
+				<label><input type="checkbox" id="glow" checked /> Glow</label>
+				<label><input type="checkbox" id="emit" checked /> Emit rings</label>
+			</div>
+			<div class="row">
+				<label>Presets</label>
+				<div class="presets">
+					<button data-preset="brand">Brand blue</button>
+					<button data-preset="emerald">Emerald</button>
+					<button data-preset="fast">Fast</button>
+					<button data-preset="calm">Calm</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="stage">
+			<orbit-absorb id="oa"><span class="mark">★</span></orbit-absorb>
+		</div>
+
+		<pre id="snippet"></pre>
+	</main>
+
+	<script type="module">
+		import "../src/index.ts";
+
+		const icons = [
+			"https://cdn.simpleicons.org/meta/0866FF",
+			"https://cdn.simpleicons.org/tiktok/000000",
+			"https://cdn.simpleicons.org/snapchat/FFFC00",
+			"https://cdn.simpleicons.org/x/000000",
+			"https://cdn.simpleicons.org/google/4285F4",
+		];
+		const oa = document.getElementById("oa");
+		oa.icons = icons;
+
+		const attrMap = {
+			accent: "accent", radius: "radius", iconSize: "icon-size", rings: "rings",
+			spin: "spin-duration", absorb: "absorb-duration", stagger: "stagger",
+		};
+
+		function sync() {
+			for (const [id, attr] of Object.entries(attrMap)) {
+				const el = document.getElementById(id);
+				oa.setAttribute(attr, el.value);
+				const out = document.getElementById(id + "Val");
+				if (out) out.textContent = el.value;
+			}
+			oa.setAttribute("glow", document.getElementById("glow").checked);
+			oa.setAttribute("emit", document.getElementById("emit").checked);
+			renderSnippet();
+		}
+
+		function renderSnippet() {
+			const a = id => document.getElementById(id).value;
+			document.getElementById("snippet").textContent =
+`<orbit-absorb
+  accent="${a("accent")}"
+  radius="${a("radius")}"
+  icon-size="${a("iconSize")}"
+  rings="${a("rings")}"
+  spin-duration="${a("spin")}"
+  absorb-duration="${a("absorb")}"
+  stagger="${a("stagger")}"
+  glow="${document.getElementById("glow").checked}"
+  emit="${document.getElementById("emit").checked}">
+  <img src="/logo.svg" alt="" width="36" />
+</orbit-absorb>`;
+		}
+
+		document.querySelectorAll("input").forEach(i => i.addEventListener("input", sync));
+
+		const presets = {
+			brand: { accent: "#007CE1", radius: 140, iconSize: 80, rings: 3, spin: 60, absorb: 7, stagger: 0.25, glow: true, emit: true },
+			emerald: { accent: "#10b981", radius: 120, iconSize: 76, rings: 4, spin: 30, absorb: 6, stagger: 0.2, glow: true, emit: true },
+			fast: { accent: "#f43f5e", radius: 150, iconSize: 84, rings: 2, spin: 12, absorb: 4, stagger: 0.15, glow: true, emit: false },
+			calm: { accent: "#6366f1", radius: 160, iconSize: 72, rings: 5, spin: 100, absorb: 10, stagger: 0.4, glow: true, emit: true },
+		};
+		document.querySelectorAll(".presets button").forEach(btn => {
+			btn.addEventListener("click", () => {
+				const p = presets[btn.dataset.preset];
+				for (const [k, v] of Object.entries(p)) {
+					const el = document.getElementById(k);
+					if (typeof v === "boolean") el.checked = v;
+					else el.value = v;
+				}
+				document.getElementById("accentVal").textContent = p.accent;
+				sync();
+			});
+		});
+
+		sync();
+	</script>
+</body>
+</html>

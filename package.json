@@ -1,0 +1,54 @@
+{
+  "name": "orbit-absorb",
+  "version": "0.1.2",
+  "description": "A dependency-free <orbit-absorb> web component: icons revolve around a center, collapse into it, and re-emerge in a staggered wave. Pure SVG + CSS.",
+  "type": "module",
+  "main": "./dist/orbit-absorb.umd.cjs",
+  "module": "./dist/orbit-absorb.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/orbit-absorb.js",
+      "require": "./dist/orbit-absorb.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "./dist/orbit-absorb.js",
+    "./dist/orbit-absorb.umd.cjs"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc --emitDeclarationOnly --outDir dist",
+    "build:demo": "vite build --config vite.demo.config.ts",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "web-component",
+    "custom-element",
+    "svg",
+    "animation",
+    "orbit",
+    "icons",
+    "ecosystem",
+    "logo-cloud"
+  ],
+  "license": "MIT",
+  "author": "gokh4nozturk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gokh4nozturk/orbit-absorb.git"
+  },
+  "homepage": "https://github.com/gokh4nozturk/orbit-absorb#readme",
+  "bugs": {
+    "url": "https://github.com/gokh4nozturk/orbit-absorb/issues"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vite": "^5.4.0"
+  }
+}
