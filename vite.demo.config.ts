@@ -8,7 +8,9 @@ export default defineConfig({
 	root: resolve(__dirname, "demo"),
 	base: process.env.VERCEL ? "/" : "/orbit-absorb/",
 	build: {
-		outDir: resolve(__dirname, "dist-demo"),
+		// Keep the output inside the Vite root (demo/) so the path is unambiguous
+		// for Vercel — writing to ../dist-demo confused its post-build output lookup.
+		outDir: resolve(__dirname, "demo/dist-demo"),
 		emptyOutDir: true,
 	},
 });
