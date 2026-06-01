@@ -187,8 +187,14 @@
 			line-height: 1;
 		}
 
+		.output {
+			display: flex;
+			flex-direction: column;
+			gap: 32px;
+			min-width: 0;
+		}
+
 		pre {
-			grid-column: 1 / -1;
 			background: #0f172a;
 			color: #e2e8f0;
 			padding: 18px 20px;
@@ -326,6 +332,10 @@
 				position: static;
 			}
 		}
+
+		.snippet {
+			user-select: all;
+		}
 	</style>
 </head>
 
@@ -375,7 +385,8 @@
 				<label><input type="checkbox" id="emit" checked /> Emit rings</label>
 			</div>
 			<div class="row">
-				<label>Icons <a class="hint" href="https://simpleicons.org" target="_blank" rel="noopener">browse names ↗</a></label>
+				<label>Icons <a class="hint" href="https://simpleicons.org" target="_blank" rel="noopener">browse names
+						↗</a></label>
 				<div class="icon-add">
 					<input type="text" id="iconInput" placeholder="github, discord or paste a URL" />
 					<button type="button" id="iconAdd">Add</button>
@@ -397,11 +408,13 @@
 			</div>
 		</div>
 
-		<div class="stage">
-			<orbit-absorb id="oa"><span class="mark">★</span></orbit-absorb>
-		</div>
+		<div class="output">
+			<div class="stage">
+				<orbit-absorb id="oa"><span class="mark">★</span></orbit-absorb>
+			</div>
 
-		<pre id="snippet"></pre>
+			<pre id="snippet" class="snippet"></pre>
+		</div>
 	</main>
 
 	<script type="module">
