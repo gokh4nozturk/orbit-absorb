@@ -4,3 +4,6 @@ dist-demo
 *.log
 .DS_Store
 .vite
+.playwright-*
+coverage
+.idea
