@@ -222,6 +222,17 @@
 			border-color: var(--accent);
 		}
 
+		.hint {
+			color: var(--accent);
+			text-decoration: none;
+			font-size: 11px;
+			font-weight: 500;
+		}
+
+		.hint:hover {
+			text-decoration: underline;
+		}
+
 		.icon-add {
 			display: flex;
 			gap: 6px;
@@ -364,7 +375,7 @@
 				<label><input type="checkbox" id="emit" checked /> Emit rings</label>
 			</div>
 			<div class="row">
-				<label>Icons</label>
+				<label>Icons <a class="hint" href="https://simpleicons.org" target="_blank" rel="noopener">browse names ↗</a></label>
 				<div class="icon-add">
 					<input type="text" id="iconInput" placeholder="github, discord or paste a URL" />
 					<button type="button" id="iconAdd">Add</button>
