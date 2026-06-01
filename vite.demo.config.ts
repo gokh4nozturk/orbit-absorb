@@ -10,7 +10,7 @@ export default defineConfig({
 	build: {
 		// Keep the output inside the Vite root (demo/) so the path is unambiguous
 		// for Vercel — writing to ../dist-demo confused its post-build output lookup.
-		outDir: resolve(__dirname, "demo/dist-demo"),
+		outDir: resolve(__dirname, "dist-demo"),
 		emptyOutDir: true,
 	},
 });
