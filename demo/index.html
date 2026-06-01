@@ -434,7 +434,7 @@
 		<div class="panel">
 			<div class="row">
 				<label>Accent <span class="val" id="accentVal">#007CE1</span></label>
-				<input type="color" id="accent" value="#007CE1" />
+				<input type="color" id="accent" value="#007CE1" style="border-radius: 0px;" />
 			</div>
 			<div class="row">
 				<label>Radius <span class="val" id="radiusVal">140</span></label>
@@ -504,55 +504,169 @@
 		<div class="table-wrap">
 			<table>
 				<thead>
-					<tr><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr>
+					<tr>
+						<th>Attribute</th>
+						<th>Type</th>
+						<th>Default</th>
+						<th>Description</th>
+					</tr>
 				</thead>
 				<tbody>
-					<tr><td><code>icons</code></td><td>JSON <code>OrbitIcon[]</code></td><td><code>[]</code></td><td>Icons that orbit the center. A URL string, or <code>{ src, x?, y? }</code> for a fixed position.</td></tr>
-					<tr><td><code>dots</code></td><td>JSON <code>OrbitDot[]</code></td><td><code>[]</code></td><td>Decorative dots/squares scattered in the canvas.</td></tr>
-					<tr><td><code>ring-radii</code></td><td>JSON <code>number[]</code></td><td><em>auto</em></td><td>Explicit ring radii (px). Overrides the spacing derived from <code>rings</code>.</td></tr>
-					<tr><td><code>radius</code></td><td>number (px)</td><td><code>140</code></td><td>Orbit radius — distance of icons from the center.</td></tr>
-					<tr><td><code>icon-size</code></td><td>number (px)</td><td><code>80</code></td><td>Width and height of each icon.</td></tr>
-					<tr><td><code>badge-size</code></td><td>number (px)</td><td><code>88</code></td><td>Diameter of the center badge.</td></tr>
-					<tr><td><code>accent</code></td><td>color</td><td><code>#007CE1</code></td><td>Center badge fill and glow color.</td></tr>
-					<tr><td><code>rings</code></td><td>number</td><td><code>3</code></td><td>Number of background rings.</td></tr>
-					<tr><td><code>spin-duration</code></td><td>number (s)</td><td><code>60</code></td><td>Time for one full revolution.</td></tr>
-					<tr><td><code>absorb-duration</code></td><td>number (s)</td><td><code>7</code></td><td>Length of one absorb-and-re-emerge cycle.</td></tr>
-					<tr><td><code>stagger</code></td><td>number (s)</td><td><code>0.25</code></td><td>Delay between each icon's absorb, creating the wave.</td></tr>
-					<tr><td><code>start-angle</code></td><td>number (deg)</td><td><code>-90</code></td><td>Angle of the first icon (−90 = top).</td></tr>
-					<tr><td><code>glow</code></td><td>boolean</td><td><code>true</code></td><td>Soft glow behind the center badge. Set <code>"false"</code> to disable.</td></tr>
-					<tr><td><code>emit</code></td><td>boolean</td><td><code>true</code></td><td>Ripple rings emitted from the center. Set <code>"false"</code> to disable.</td></tr>
-					<tr><td><code>width</code></td><td>number (px)</td><td><em>auto</em></td><td>Override the SVG viewBox width.</td></tr>
-					<tr><td><code>height</code></td><td>number (px)</td><td><em>auto</em></td><td>Override the SVG viewBox height.</td></tr>
-					<tr><td><code>center-x</code></td><td>number (px)</td><td><em>width / 2</em></td><td>Override the center X coordinate.</td></tr>
-					<tr><td><code>center-y</code></td><td>number (px)</td><td><em>height / 2</em></td><td>Override the center Y coordinate.</td></tr>
+					<tr>
+						<td><code>icons</code></td>
+						<td>JSON <code>OrbitIcon[]</code></td>
+						<td><code>[]</code></td>
+						<td>Icons that orbit the center. A URL string, or <code>{ src, x?, y? }</code> for a fixed position.</td>
+					</tr>
+					<tr>
+						<td><code>dots</code></td>
+						<td>JSON <code>OrbitDot[]</code></td>
+						<td><code>[]</code></td>
+						<td>Decorative dots/squares scattered in the canvas.</td>
+					</tr>
+					<tr>
+						<td><code>ring-radii</code></td>
+						<td>JSON <code>number[]</code></td>
+						<td><em>auto</em></td>
+						<td>Explicit ring radii (px). Overrides the spacing derived from <code>rings</code>.</td>
+					</tr>
+					<tr>
+						<td><code>radius</code></td>
+						<td>number (px)</td>
+						<td><code>140</code></td>
+						<td>Orbit radius — distance of icons from the center.</td>
+					</tr>
+					<tr>
+						<td><code>icon-size</code></td>
+						<td>number (px)</td>
+						<td><code>80</code></td>
+						<td>Width and height of each icon.</td>
+					</tr>
+					<tr>
+						<td><code>badge-size</code></td>
+						<td>number (px)</td>
+						<td><code>88</code></td>
+						<td>Diameter of the center badge.</td>
+					</tr>
+					<tr>
+						<td><code>accent</code></td>
+						<td>color</td>
+						<td><code>#007CE1</code></td>
+						<td>Center badge fill and glow color.</td>
+					</tr>
+					<tr>
+						<td><code>rings</code></td>
+						<td>number</td>
+						<td><code>3</code></td>
+						<td>Number of background rings.</td>
+					</tr>
+					<tr>
+						<td><code>spin-duration</code></td>
+						<td>number (s)</td>
+						<td><code>60</code></td>
+						<td>Time for one full revolution.</td>
+					</tr>
+					<tr>
+						<td><code>absorb-duration</code></td>
+						<td>number (s)</td>
+						<td><code>7</code></td>
+						<td>Length of one absorb-and-re-emerge cycle.</td>
+					</tr>
+					<tr>
+						<td><code>stagger</code></td>
+						<td>number (s)</td>
+						<td><code>0.25</code></td>
+						<td>Delay between each icon's absorb, creating the wave.</td>
+					</tr>
+					<tr>
+						<td><code>start-angle</code></td>
+						<td>number (deg)</td>
+						<td><code>-90</code></td>
+						<td>Angle of the first icon (−90 = top).</td>
+					</tr>
+					<tr>
+						<td><code>glow</code></td>
+						<td>boolean</td>
+						<td><code>true</code></td>
+						<td>Soft glow behind the center badge. Set <code>"false"</code> to disable.</td>
+					</tr>
+					<tr>
+						<td><code>emit</code></td>
+						<td>boolean</td>
+						<td><code>true</code></td>
+						<td>Ripple rings emitted from the center. Set <code>"false"</code> to disable.</td>
+					</tr>
+					<tr>
+						<td><code>width</code></td>
+						<td>number (px)</td>
+						<td><em>auto</em></td>
+						<td>Override the SVG viewBox width.</td>
+					</tr>
+					<tr>
+						<td><code>height</code></td>
+						<td>number (px)</td>
+						<td><em>auto</em></td>
+						<td>Override the SVG viewBox height.</td>
+					</tr>
+					<tr>
+						<td><code>center-x</code></td>
+						<td>number (px)</td>
+						<td><em>width / 2</em></td>
+						<td>Override the center X coordinate.</td>
+					</tr>
+					<tr>
+						<td><code>center-y</code></td>
+						<td>number (px)</td>
+						<td><em>height / 2</em></td>
+						<td>Override the center Y coordinate.</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
 
 		<h3>Properties (JavaScript)</h3>
-		<p class="docs-note">For frameworks, set these as JS arrays instead of JSON attributes — they take precedence over the matching attribute.</p>
+		<p class="docs-note">For frameworks, set these as JS arrays instead of JSON attributes — they take precedence over
+			the matching attribute.</p>
 		<div class="table-wrap">
 			<table>
 				<thead>
-					<tr><th>Property</th><th>Type</th><th>Description</th></tr>
+					<tr>
+						<th>Property</th>
+						<th>Type</th>
+						<th>Description</th>
+					</tr>
 				</thead>
 				<tbody>
-					<tr><td><code>icons</code></td><td><code>OrbitIcon[]</code></td><td>Orbiting icons as a live array.</td></tr>
-					<tr><td><code>dots</code></td><td><code>OrbitDot[]</code></td><td>Decorative dots as a live array.</td></tr>
-					<tr><td><code>ringRadii</code></td><td><code>number[]</code></td><td>Explicit ring radii as a live array.</td></tr>
+					<tr>
+						<td><code>icons</code></td>
+						<td><code>OrbitIcon[]</code></td>
+						<td>Orbiting icons as a live array.</td>
+					</tr>
+					<tr>
+						<td><code>dots</code></td>
+						<td><code>OrbitDot[]</code></td>
+						<td>Decorative dots as a live array.</td>
+					</tr>
+					<tr>
+						<td><code>ringRadii</code></td>
+						<td><code>number[]</code></td>
+						<td>Explicit ring radii as a live array.</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
 
 		<h3>Slot</h3>
-		<p class="docs-note">The default slot renders inside the center badge — drop in a logo or mark, e.g. <code>&lt;img src="/logo.svg" /&gt;</code>.</p>
+		<p class="docs-note">The default slot renders inside the center badge — drop in a logo or mark, e.g.
+			<code>&lt;img src="/logo.svg" /&gt;</code>.</p>
 
 		<h3>Types</h3>
 		<pre class="docs-types">type OrbitIcon = string | { src: string; x?: number; y?: number };
 type OrbitDot  = { cx: number; cy: number; r?: number; size?: number; fill: string };</pre>
 
 		<h3>Accessibility</h3>
-		<p class="docs-note">Respects <code>prefers-reduced-motion: reduce</code> — when the user prefers reduced motion, all animations are disabled and icons rest in their orbit.</p>
+		<p class="docs-note">Respects <code>prefers-reduced-motion: reduce</code> — when the user prefers reduced motion,
+			all animations are disabled and icons rest in their orbit.</p>
 	</section>
 
 	<script type="module">
