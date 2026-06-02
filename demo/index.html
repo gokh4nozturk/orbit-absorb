@@ -543,7 +543,9 @@
 
 		<div class="output">
 			<div class="stage">
-				<orbit-absorb id="oa"><span class="mark">★</span></orbit-absorb>
+				<orbit-absorb id="oa">
+					<img src="https://storage.gozturk.dev/profile.svg" alt="Logo" width="36" />
+				</orbit-absorb>
 			</div>
 
 			<pre id="snippet" class="snippet"></pre>
@@ -711,7 +713,8 @@
 
 		<h3>Slot</h3>
 		<p class="docs-note">The default slot renders inside the center badge — drop in a logo or mark, e.g.
-			<code>&lt;img src="/logo.svg" /&gt;</code>.</p>
+			<code>&lt;img src="/logo.svg" /&gt;</code>.
+		</p>
 
 		<h3>Types</h3>
 		<pre class="docs-types">type OrbitIcon = string | { src: string; x?: number; y?: number };
@@ -748,11 +751,11 @@ type OrbitDot  = { cx: number; cy: number; r?: number; size?: number; fill: stri
 		// Default icons carry explicit light/dark colors so black marks (TikTok, X)
 		// stay visible in dark mode. User-added names use the brand color (no override).
 		const defaultIcons = [
-			{ kind: "si", name: "meta", light: "0866FF", dark: "0866FF" },
-			{ kind: "si", name: "tiktok", light: "000000", dark: "e2e8f0" },
-			{ kind: "si", name: "snapchat", light: "FFFC00", dark: "FFFC00" },
-			{ kind: "si", name: "x", light: "000000", dark: "e2e8f0" },
-			{ kind: "si", name: "google", light: "4285F4", dark: "4285F4" },
+			{ kind: "si", name: "react", light: "61DAFB", dark: "61DAFB" },
+			{ kind: "si", name: "vuedotjs", light: "4FC08D", dark: "4FC08D" },
+			{ kind: "si", name: "typescript", light: "3178C6", dark: "3178C6" },
+			{ kind: "si", name: "github", light: "181717", dark: "181717" },
+			{ kind: "si", name: "zedindustries", light: "084CCF", dark: "084CCF" },
 		];
 		let iconList = defaultIcons.map(d => ({ ...d }));
 
